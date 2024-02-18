@@ -38,6 +38,13 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
         telegramBot.setUpdatesListener(this);
     }
 
+    /**
+     *Позволяет пользователю выбирать необходимый блок с информацией, в том числе о конкретном животном.
+     *Передает пользователю информацию о приюте и животных.
+     *В случае, если ни один из вариантов не подошел, то можно вызвать волонтера.
+     *Если обращение не первое, то пользователь начнет диалог с выбора приюта.
+     *Не пытайтесь менять сообщение, отправленное боту. Это приведет к падению приложения и проблемами с ним в дальнейшем.
+     */
     @Override
     public int process(List<Update> updates) throws NullPointerException {
         updates.forEach(update -> {
