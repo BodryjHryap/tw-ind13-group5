@@ -16,4 +16,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query("SELECT u FROM User u")
     List<User> getAllUsers();
+
+    @Query("UPDATE User u SET u.phoneNumber = :phone_number")
+    User updateUserPhone();
 }
