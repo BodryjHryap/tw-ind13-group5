@@ -27,7 +27,7 @@ public class User {
     @Column(name = "user_type")
     private UserType userType;
     @Column(name = "phone_number")
-    private String phone;
+    private String phoneNumber;
 
     public User(long telegramId, String telegramNick, UserType userType) {
         this.telegramId = telegramId;
@@ -35,11 +35,11 @@ public class User {
         this.userType = userType;
     }
 
-    public User(long telegramId, String telegramNick, UserType userType, String phone) {
+    public User(long telegramId, String telegramNick, UserType userType, String phoneNumber) {
         this.telegramId = telegramId;
         this.telegramNick = telegramNick;
         this.userType = userType;
-        this.phone = phone;
+        this.phoneNumber = phoneNumber;
     }
 
     public User() {

@@ -269,7 +269,7 @@ public class UserRequestsService {
 
         if (validateContactDetails(text)) {
             telegramBot.execute(new SendMessage(chatId, "ok"));
-            userService.addPhoneNumber(userId);
+            userService.addPhoneNumber(userId, text);
         } else {
             telegramBot.execute(new SendMessage(chatId, "не ok"));
         }

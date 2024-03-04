@@ -2,6 +2,7 @@ package com.skypro.twind13group5.repository;
 
 import com.skypro.twind13group5.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -12,11 +13,12 @@ import java.util.List;
 public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query("SELECT u FROM User u WHERE u.telegramId = :telegram_id")
-    User findByTelegramId(@Param("telegram_id")long telegramId);
+    User findByTelegramId(@Param("telegram_id") long telegramId);
 
     @Query("SELECT u FROM User u")
     List<User> getAllUsers();
 
-    @Query("UPDATE User u SET u.phoneNumber = :phone_number")
-    User updateUserPhone();
+    @Modifying
+    @Query("UPDATE User u SET u.phoneNumber = :phone_number WHERE u.telegramId = :telegram_id")
+    void updateUserPhone(@Param("telegram_id") long telegramId, @Param("phone_number") String phoneNumber);
 }

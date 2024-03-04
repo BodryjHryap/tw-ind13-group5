@@ -26,14 +26,11 @@ public class UserService {
         }
         return user;
     }
-
-    @Transactional
-    public void addPhoneNumber(long telegramId) {
-        User user = userRepository.findByTelegramId(telegramId);
-        userRepository.updateUserPhone();
+@Transactional
+    public void addPhoneNumber(long telegramId, String phoneNumber) {
+        userRepository.updateUserPhone(telegramId, phoneNumber);
     }
 
-    @Transactional
     public User findUserByTelegramId(long telegramId) {
         return userRepository.findByTelegramId(telegramId);
     }
