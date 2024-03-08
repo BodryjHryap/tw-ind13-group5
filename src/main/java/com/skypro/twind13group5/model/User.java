@@ -26,11 +26,20 @@ public class User {
     private String lastName;
     @Column(name = "user_type")
     private UserType userType;
+    @Column(name = "phone_number")
+    private String phoneNumber;
 
     public User(long telegramId, String telegramNick, UserType userType) {
         this.telegramId = telegramId;
         this.telegramNick = telegramNick;
         this.userType = userType;
+    }
+
+    public User(long telegramId, String telegramNick, UserType userType, String phoneNumber) {
+        this.telegramId = telegramId;
+        this.telegramNick = telegramNick;
+        this.userType = userType;
+        this.phoneNumber = phoneNumber;
     }
 
     public User() {

@@ -32,4 +32,24 @@ public class InlineKeyboardMarkupService {
         inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Вернуться в предыдущее меню").callbackData("Выбор приюта"));
         return inlineKeyboardMarkup;
     }
+
+    public Keyboard createButtonsDogsShelterInfo() {
+        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
+        inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Расписание работы, адрес и схема проезда").callbackData("Расписание, адрес, схема(собаки)"));
+        inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Оформить пропуск на машину").callbackData("Оформить пропуск(собаки)"));
+        inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Рекомендации о технике безопасности").callbackData("Техника безопасности"));
+        inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Оставить контактные данные для связи").callbackData("Записать телефон"));
+        inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Позвать волонтера").callbackData("Вызов волонтёра"));
+        return inlineKeyboardMarkup;
+    }
+    public Keyboard createButtonsCatsShelterInfo() {
+        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
+        inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Расписание работы, адрес и схема проезда").callbackData("Расписание, адрес, схема(кошки)"));
+        inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Оформить пропуск на машину").callbackData("Оформить пропуск(кошки)"));
+        inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Рекомендации о технике безопасности").callbackData("Техника безопасности"));
+        inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Оставить контактные данные для связи").callbackData("Записать телефон"));
+        inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Позвать волонтера").callbackData("Вызов волонтёра"));
+        return inlineKeyboardMarkup;
+    }
+
 }
