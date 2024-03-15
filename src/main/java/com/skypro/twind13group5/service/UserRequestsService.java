@@ -8,13 +8,9 @@ import com.pengrad.telegrambot.request.SendMessage;
 import com.pengrad.telegrambot.request.SendPhoto;
 import com.skypro.twind13group5.model.User;
 import com.skypro.twind13group5.enums.UserType;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -26,13 +22,15 @@ import java.util.regex.Pattern;
 public class UserRequestsService {
 
     private final UserService userService;
+    private final PetService petService;
     private final TelegramBot telegramBot;
     private final InlineKeyboardMarkupService inlineKeyboardMarkupService;
     private final Map<Long, Boolean> stateByChatId = new HashMap<>();
     private final Map<Long, Boolean> contactDetailsStateByChatId = new HashMap<>();
 
-    public UserRequestsService(UserService userService, TelegramBot telegramBot, InlineKeyboardMarkupService inlineKeyboardMarkupService) {
+    public UserRequestsService(UserService userService, PetService petService, TelegramBot telegramBot, InlineKeyboardMarkupService inlineKeyboardMarkupService) {
         this.userService = userService;
+        this.petService = petService;
         this.telegramBot = telegramBot;
         this.inlineKeyboardMarkupService = inlineKeyboardMarkupService;
     }
@@ -95,6 +93,17 @@ public class UserRequestsService {
                 case "Оформить пропуск(кошки)" -> getCatShelterCarPass(chatId);
                 case "Техника безопасности" -> getSafetyPrecautions(chatId);
                 case "Записать телефон" -> writePhone(chatId);
+                case "Список собак" -> listOfDogs(chatId);
+                case "Правила знакомства" -> datingRules(chatId);
+                case "Список документов" -> listOfDocuments(chatId);
+                case "Рекомендации" -> getRecommendations(chatId);
+                case "Причины отказа" -> getReasonsForRefusal(chatId);
+                case "Транспортировка" -> getRecommendationsTransportingPets(chatId);
+                case "Дом(щенок)" -> getRecommendationsArrangingHomePuppy(chatId);
+                case "Дом(собака)" -> getRecommendationsArrangingHomeDog(chatId);
+                case "Дом(инвалид)" -> getRecommendationsArrangingHomeDisabledDog(chatId);
+                case "Советы кинолога" -> getDogHandlerAdvice(chatId);
+                case "Проверенные кинологи" -> getVerifiedDogHandlers(chatId);
 
             }
         }
@@ -126,6 +135,7 @@ public class UserRequestsService {
 
     private void getHowAdoptDog(long chatId) {
         SendMessage sendMessage = new SendMessage(chatId, "Здесь пишется информация о том как взять собаку из приюта");
+        sendMessage.replyMarkup(inlineKeyboardMarkupService.createButtonsHowAdoptDog());
         telegramBot.execute(sendMessage);
     }
 
@@ -179,7 +189,6 @@ public class UserRequestsService {
     private void handleCallVolunteer(Update update) {
         Message message = update.message();
         Long chatId = message.from().id();
-        long userId = update.message().from().id();
         String text = message.text();
         String name = message.from().username();
 
@@ -273,6 +282,64 @@ public class UserRequestsService {
         } else {
             telegramBot.execute(new SendMessage(chatId, "не ok"));
         }
+    }
+
+    private void listOfDogs(long chatId) {
+        SendMessage sendMessage = new SendMessage(chatId, "Список собак, имеющихся в приюте");
+        telegramBot.execute(sendMessage);
+        SendMessage sendMessage2 = new SendMessage(chatId, petService.getAllPets().toString());
+        telegramBot.execute(sendMessage2);
+
+    }
+
+    private void datingRules(long chatId) {
+        SendMessage sendMessage = new SendMessage(chatId, "Здесь размещаются правила знакомства с животным до того, как забрать его из приюта");
+        telegramBot.execute(sendMessage);
+    }
+
+    private void listOfDocuments(long chatId) {
+        SendMessage sendMessage = new SendMessage(chatId, "Здесь размещается список документов, необходимых для того, чтобы взять животное из приюта");
+        telegramBot.execute(sendMessage);
+    }
+
+    private void getRecommendations(long chatId) {
+        SendMessage sendMessage = new SendMessage(chatId, "Максимально полная информацию о том, как человеку предстоит подготовиться к встрече с новым членом семьи");
+        sendMessage.replyMarkup(inlineKeyboardMarkupService.createRecommendationsButtons());
+        telegramBot.execute(sendMessage);
+    }
+
+    private void getReasonsForRefusal(long chatId) {
+        SendMessage sendMessage = new SendMessage(chatId, "Здесь размещается список причин по которым могли отказать в усыновлении животного");
+        telegramBot.execute(sendMessage);
+    }
+
+    private void getRecommendationsTransportingPets(long chatId) {
+        SendMessage sendMessage = new SendMessage(chatId, "Здесь размещается список рекомендаций по транспортировке животного");
+        telegramBot.execute(sendMessage);
+    }
+
+    private void getRecommendationsArrangingHomePuppy(long chatId) {
+        SendMessage sendMessage = new SendMessage(chatId, "Здесь размещается список рекомендаций по обустройству дома для щенка");
+        telegramBot.execute(sendMessage);
+    }
+
+    private void getRecommendationsArrangingHomeDog(long chatId) {
+        SendMessage sendMessage = new SendMessage(chatId, "Здесь размещается список рекомендаций по обустройству дома для взрослого животного");
+        telegramBot.execute(sendMessage);
+    }
+
+    private void getRecommendationsArrangingHomeDisabledDog(long chatId) {
+        SendMessage sendMessage = new SendMessage(chatId, "Здесь размещается список рекомендаций по обустройству дома для взрослого животного с ограниченными возможностями (зрение, передвижение)");
+        telegramBot.execute(sendMessage);
+    }
+
+    private void getDogHandlerAdvice(long chatId) {
+        SendMessage sendMessage = new SendMessage(chatId, "Здесь размещаются советы кинолога по первичному общению с собакой");
+        telegramBot.execute(sendMessage);
+    }
+    private void getVerifiedDogHandlers(long chatId) {
+        SendMessage sendMessage = new SendMessage(chatId, "Здесь выдаются рекомендации по проверенным кинологам для дальнейшего обращения к ним");
+        telegramBot.execute(sendMessage);
     }
 }
 

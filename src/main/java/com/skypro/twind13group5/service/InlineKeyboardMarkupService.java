@@ -40,6 +40,7 @@ public class InlineKeyboardMarkupService {
         inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Рекомендации о технике безопасности").callbackData("Техника безопасности"));
         inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Оставить контактные данные для связи").callbackData("Записать телефон"));
         inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Позвать волонтера").callbackData("Вызов волонтёра"));
+        inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Вернуться в предыдущее меню").callbackData("Приют для собак"));
         return inlineKeyboardMarkup;
     }
     public Keyboard createButtonsCatsShelterInfo() {
@@ -49,7 +50,32 @@ public class InlineKeyboardMarkupService {
         inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Рекомендации о технике безопасности").callbackData("Техника безопасности"));
         inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Оставить контактные данные для связи").callbackData("Записать телефон"));
         inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Позвать волонтера").callbackData("Вызов волонтёра"));
+        inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Вернуться в предыдущее меню").callbackData("Приют для кошек"));
         return inlineKeyboardMarkup;
     }
 
+    public Keyboard createButtonsHowAdoptDog() {
+        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
+        inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Список животных для усыновления").callbackData("Список собак"));
+        inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Правила знакомства с животным").callbackData("Правила знакомства"));
+        inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Список документов для усыновления").callbackData("Список документов"));
+        inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Список рекомендаций").callbackData("Рекомендации"));
+        inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Возможные причины отказа").callbackData("Причины отказа"));
+        inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Оставить контактные данные для связи").callbackData("Записать телефон"));
+        inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Позвать волонтера").callbackData("Вызов волонтёра"));
+        inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Вернуться в предыдущее меню").callbackData("Приют для собак"));
+        return inlineKeyboardMarkup;
+    }
+
+    public Keyboard createRecommendationsButtons() {
+        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
+        inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Рекомендации по транспортировке животного").callbackData("Транспортировка"));
+        inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Рекомендации по обустройству дома для щенка").callbackData("Дом(щенок)"));
+        inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Рекомендации по обустройству дома для взрослого животного").callbackData("Дом(собака)"));
+        inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Рекомендации по обустройству дома для животного с ограниченными возможностями (зрение, передвижение))").callbackData("Дом(инвалид)"));
+        inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Советы кинолога по первичному общению с собакой").callbackData("Советы кинолога"));
+        inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Проверенные кинологи").callbackData("Проверенные кинологи"));
+        inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Вернуться в предыдущее меню").callbackData("Как взять собаку"));
+        return inlineKeyboardMarkup;
+    }
 }
