@@ -5,6 +5,11 @@ import com.skypro.twind13group5.enums.PetType;
 import jakarta.persistence.*;
 import lombok.Data;
 
+/**
+ * Класс животных, в котором передает Id, имя животного, тип животного
+ * цвет, пол и породу
+ */
+
 @Data
 @Entity
 @Table(name = "pets")

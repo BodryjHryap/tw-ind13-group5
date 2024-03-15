@@ -4,6 +4,10 @@ import com.skypro.twind13group5.enums.UserType;
 import jakarta.persistence.*;
 import lombok.Data;
 
+/**
+ * Сущность пользователей
+ */
+
 @Data
 @Entity
 @Table(name = "users")
