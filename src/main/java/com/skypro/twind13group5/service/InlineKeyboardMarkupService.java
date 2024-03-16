@@ -7,14 +7,14 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class InlineKeyboardMarkupService {
-    public Keyboard createButtonsShelterTypeSelect() {
+    public InlineKeyboardMarkup createButtonsShelterTypeSelect() {
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
         inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Приют для собак").callbackData("Приют для собак"));
         inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Приют для кошек").callbackData("Приют для кошек"));
         return inlineKeyboardMarkup;
     }
 
-    public Keyboard createButtonsDogsShelter() {
+    public InlineKeyboardMarkup createButtonsDogsShelter() {
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
         inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Узнать информацию о приюте").callbackData("Информация о приюте для собак"));
         inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Как взять животное из приюта?").callbackData("Как взять собаку"));
@@ -23,7 +23,7 @@ public class InlineKeyboardMarkupService {
         inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Вернуться в предыдущее меню").callbackData("Выбор приюта"));
         return inlineKeyboardMarkup;
     }
-    public Keyboard createButtonsCatsShelter() {
+    public InlineKeyboardMarkup createButtonsCatsShelter() {
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
         inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Узнать информацию о приюте").callbackData("Информация о приюте для кошек"));
         inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Как взять животное из приюта?").callbackData("Как взять кошку"));
@@ -33,7 +33,7 @@ public class InlineKeyboardMarkupService {
         return inlineKeyboardMarkup;
     }
 
-    public Keyboard createButtonsDogsShelterInfo() {
+    public InlineKeyboardMarkup createButtonsDogsShelterInfo() {
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
         inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Расписание работы, адрес и схема проезда").callbackData("Расписание, адрес, схема(собаки)"));
         inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Оформить пропуск на машину").callbackData("Оформить пропуск(собаки)"));
@@ -43,7 +43,7 @@ public class InlineKeyboardMarkupService {
         inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Вернуться в предыдущее меню").callbackData("Приют для собак"));
         return inlineKeyboardMarkup;
     }
-    public Keyboard createButtonsCatsShelterInfo() {
+    public InlineKeyboardMarkup createButtonsCatsShelterInfo() {
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
         inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Расписание работы, адрес и схема проезда").callbackData("Расписание, адрес, схема(кошки)"));
         inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Оформить пропуск на машину").callbackData("Оформить пропуск(кошки)"));
@@ -54,7 +54,7 @@ public class InlineKeyboardMarkupService {
         return inlineKeyboardMarkup;
     }
 
-    public Keyboard createButtonsHowAdoptDog() {
+    public InlineKeyboardMarkup createButtonsHowAdoptDog() {
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
         inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Список животных для усыновления").callbackData("Список собак"));
         inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Правила знакомства с животным").callbackData("Правила знакомства"));
@@ -67,7 +67,7 @@ public class InlineKeyboardMarkupService {
         return inlineKeyboardMarkup;
     }
 
-    public Keyboard createRecommendationsButtons() {
+    public InlineKeyboardMarkup createRecommendationsButtons() {
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
         inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Рекомендации по транспортировке животного").callbackData("Транспортировка"));
         inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Рекомендации по обустройству дома для щенка").callbackData("Дом(щенок)"));
