@@ -48,10 +48,16 @@ public class TelegramBotUpdateListener implements UpdatesListener {
             updates.forEach(update -> {
                 logger.info("Handles update: {}", update);
 
+                if (userRequestsService.checkReport(update)) {
+                    return;
+                }
                 if (userRequestsService.checkVolunteer(update)) {
                     return;
                 }
                 if (userRequestsService.checkContactDetails(update)) {
+                    return;
+                }
+                if (userRequestsService.checkAdopter(update)) {
                     return;
                 }
                 if (update.message() == null) {

@@ -83,4 +83,72 @@ public class InlineKeyboardMarkupService {
         inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Вернуться в предыдущее меню").callbackData("Как взять собаку"));
         return inlineKeyboardMarkup;
     }
+
+    public InlineKeyboardMarkup createButtonsCatShelterReport() {
+
+        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
+        inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Правила предоставления отчета")
+                .callbackData("CLICK_RULES_REPORT_CAT"));
+        inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Отчитаться")
+                .callbackData("CLICK_REPORT_CAT"));
+        inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Позвать волонтера")
+                .callbackData("Вызов волонтёра"));
+        inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Назад")
+                .callbackData("CLICK_CAT_SHELTER"));
+        return inlineKeyboardMarkup;
+    }
+
+    public InlineKeyboardMarkup createButtonsDogShelterReport() {
+
+        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
+        inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Правила предоставления отчета")
+                .callbackData("CLICK_RULES_REPORT_DOG"));
+        inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Отчитаться")
+                .callbackData("CLICK_REPORT_DOG"));
+        inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Позвать волонтера")
+                .callbackData("Вызов волонтёра"));
+        inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Назад")
+                .callbackData("CLICK_DOG_SHELTER"));
+        return inlineKeyboardMarkup;
+    }
+
+    public InlineKeyboardMarkup createButtonsCheckReport() {
+
+        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
+        inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Свободное сообщение")
+                .callbackData("CLICK_FREE_MESSAGE"));
+        inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Отчет в порядке")
+                .callbackData("CLICK_OK"));
+        inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Есть проблемы с отчетом")
+                .callbackData("CLICK_NOT_OK"));
+
+        return inlineKeyboardMarkup;
+    }
+
+
+    public InlineKeyboardMarkup createButtonsCheckReportNotOk() {
+
+        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
+        inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Предупредить усыновителя")
+                .callbackData("CLICK_WARNING_REPORT"));
+        inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Продлить испытательный срок")
+                .callbackData("CLICK_EXTEND"));
+        inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Испытательный срок не пройден")
+                .callbackData("CLICK_DELETE_ADOPTER"));
+
+        return inlineKeyboardMarkup;
+    }
+
+    public InlineKeyboardMarkup createButtonsVolunteerMenu() {
+
+        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
+        inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Меню пользователя")
+                .callbackData("CLICK_BACK_TO_SHELTER_TYPE"));
+        inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Добавить усыновителя")
+                .callbackData("CLICK_RECORDING_NEW_ANIMAL"));
+        inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Проверить отчет")
+                .callbackData("CLICK_CHECK_REPORT"));
+
+        return inlineKeyboardMarkup;
+    }
 }

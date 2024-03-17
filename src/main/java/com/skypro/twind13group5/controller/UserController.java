@@ -1,5 +1,6 @@
 package com.skypro.twind13group5.controller;
 
+import com.skypro.twind13group5.enums.ShelterType;
 import com.skypro.twind13group5.enums.UserStatus;
 import com.skypro.twind13group5.enums.UserType;
 import com.skypro.twind13group5.model.User;
@@ -82,6 +83,7 @@ public class UserController {
     )
     public ResponseEntity<User> addNewGuest(@RequestParam(required = false) Long telegramId,
                                             @RequestParam(required = false) String telegramNick,
+                                            @RequestParam(required = false) ShelterType shelterType,
                                             @RequestParam(required = false) String firstName,
                                             @RequestParam(required = false) String lastName,
                                             @RequestParam(required = false) String phoneNumber,
@@ -93,6 +95,7 @@ public class UserController {
             return ResponseEntity.ok(userService.addGuest(telegramId,
                     telegramNick,
                     userType,
+                    shelterType,
                     userStatus,
                     firstName,
                     lastName,
@@ -127,6 +130,7 @@ public class UserController {
     public ResponseEntity<User> addNewAdopterOrVolunteer(@RequestParam(required = false) Long telegramId,
                                                          @RequestParam(required = false) String telegramNick,
                                                          @RequestParam(required = false) String firstName,
+                                                         @RequestParam(required = false) ShelterType shelterType,
                                                          @RequestParam(required = false) String lastName,
                                                          @RequestParam(required = false) String phoneNumber,
                                                          @RequestParam(required = false) String carNumber,
@@ -139,6 +143,7 @@ public class UserController {
             return ResponseEntity.ok(userService.addAdopterOrVolunteer(telegramId,
                     telegramNick,
                     userType,
+                    shelterType,
                     userStatus,
                     firstName,
                     lastName,

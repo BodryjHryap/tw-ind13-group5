@@ -1,5 +1,6 @@
 package com.skypro.twind13group5.service;
 
+import com.skypro.twind13group5.enums.ShelterType;
 import com.skypro.twind13group5.enums.UserStatus;
 import com.skypro.twind13group5.exception.NotFoundUserException;
 import com.skypro.twind13group5.model.User;
@@ -45,6 +46,7 @@ public class UserService {
     public User addGuest(long telegramId,
                          String nickName,
                          UserType userType,
+                         ShelterType shelterType,
                          UserStatus userStatus,
                          String firstName,
                          String lastName,
@@ -56,6 +58,7 @@ public class UserService {
                 firstName,
                 lastName,
                 phoneNumber,
+                shelterType,
                 carNumber,
                 userType,
                 userStatus);
@@ -68,6 +71,7 @@ public class UserService {
                 lastName,
                 phoneNumber,
                 carNumber,
+                shelterType,
                 userType,
                 userStatus,
                 telegramId);
@@ -79,6 +83,7 @@ public class UserService {
     public User addAdopterOrVolunteer(long telegramId,
                                       String nickName,
                                       UserType userType,
+                                      ShelterType shelterType,
                                       UserStatus userStatus,
                                       String firstName,
                                       String lastName,
@@ -95,6 +100,7 @@ public class UserService {
                 carNumber,
                 email,
                 address,
+                shelterType,
                 userType,
                 userStatus);
         User user = userRepository.findByTelegramId(telegramId);

@@ -37,6 +37,8 @@ public class User {
     private String firstName;
     @Column(name = "last_name")
     private String lastName;
+    @Column(name = "shelter_type")
+    private ShelterType shelterType;
     @Column(name = "user_type")
     private UserType userType;
     @Column(name = "phone_number")
@@ -67,6 +69,7 @@ public class User {
                 String firstName,
                 String lastName,
                 String phoneNumber,
+                ShelterType shelterType,
                 UserType userType,
                 UserStatus userStatus) {
         this.telegramId = telegramId;
@@ -74,17 +77,19 @@ public class User {
         setFirstName(firstName);
         setLastName(lastName);
         setPhoneNumber(phoneNumber);
+        this.shelterType = shelterType;
         this.userType = userType;
         this.userStatus = userStatus;
     }
 
-    //Конструктор для гостя с машины
+    //Конструктор для гостя с машиной
 
     public User(long telegramId,
                 String telegramNick,
                 String firstName,
                 String lastName,
                 String phoneNumber,
+                ShelterType shelterType,
                 String carNumber,
                 UserType userType,
                 UserStatus userStatus) {
@@ -94,6 +99,7 @@ public class User {
         setLastName(lastName);
         setCarNumber(carNumber);
         setPhoneNumber(phoneNumber);
+        this.shelterType = shelterType;
         this.userType = userType;
         this.userStatus = userStatus;
     }
@@ -108,6 +114,7 @@ public class User {
                 String carNumber,
                 String email,
                 String address,
+                ShelterType shelterType,
                 UserType userType,
                 UserStatus userStatus) {
         this.telegramId = telegramId;
@@ -118,6 +125,7 @@ public class User {
         setPhoneNumber(phoneNumber);
         setEmail(email);
         this.address = address;
+        this.shelterType = shelterType;
         this.userType = userType;
         this.userStatus = userStatus;
     }

@@ -1,5 +1,6 @@
 package com.skypro.twind13group5.repository;
 
+import com.skypro.twind13group5.enums.ShelterType;
 import com.skypro.twind13group5.enums.UserStatus;
 import com.skypro.twind13group5.enums.UserType;
 import com.skypro.twind13group5.model.User;
@@ -48,6 +49,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
             "u.lastName = :last_name," +
             "u.phoneNumber = :phone_number," +
             "u.carNumber = :car_number," +
+            "u.shelterType = :shelter_type," +
             "u.userType = :user_type," +
             "u.userStatus = :user_status" +
             " WHERE u.telegramId = :telegram_id")
@@ -56,6 +58,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
             @Param("last_name") String lastName,
             @Param("phone_number") String phoneNumber,
             @Param("car_number") String carNumber,
+            @Param("shelter_type") ShelterType shelterType,
             @Param("user_type") UserType userType,
             @Param("user_status") UserStatus userStatus,
             @Param("telegram_id") Long telegramId);
