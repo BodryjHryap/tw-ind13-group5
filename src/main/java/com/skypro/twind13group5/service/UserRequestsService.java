@@ -3,14 +3,23 @@ package com.skypro.twind13group5.service;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.CallbackQuery;
 import com.pengrad.telegrambot.model.Message;
+import com.pengrad.telegrambot.model.PhotoSize;
 import com.pengrad.telegrambot.model.Update;
+import com.pengrad.telegrambot.request.GetFile;
 import com.pengrad.telegrambot.request.SendMessage;
 import com.pengrad.telegrambot.request.SendPhoto;
+import com.pengrad.telegrambot.response.GetFileResponse;
+import com.skypro.twind13group5.enums.StatusReport;
+import com.skypro.twind13group5.model.Report;
 import com.skypro.twind13group5.model.User;
 import com.skypro.twind13group5.enums.UserType;
+import com.skypro.twind13group5.repository.ReportRepository;
+import com.skypro.twind13group5.repository.UserRepository;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
+import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -25,14 +34,21 @@ public class UserRequestsService {
     private final PetService petService;
     private final TelegramBot telegramBot;
     private final InlineKeyboardMarkupService inlineKeyboardMarkupService;
+    private final UserRepository userRepository;
+    private final ReportRepository reportRepository;
+    private final ReportService reportService;
     private final Map<Long, Boolean> stateByChatId = new HashMap<>();
     private final Map<Long, Boolean> contactDetailsStateByChatId = new HashMap<>();
+    private final Map<Long, Boolean> reportStateByChatId = new HashMap<>();
 
-    public UserRequestsService(UserService userService, PetService petService, TelegramBot telegramBot, InlineKeyboardMarkupService inlineKeyboardMarkupService) {
+    public UserRequestsService(UserService userService, PetService petService, TelegramBot telegramBot, InlineKeyboardMarkupService inlineKeyboardMarkupService, UserRepository userRepository, ReportRepository reportRepository, ReportService reportService) {
         this.userService = userService;
         this.petService = petService;
         this.telegramBot = telegramBot;
         this.inlineKeyboardMarkupService = inlineKeyboardMarkupService;
+        this.userRepository = userRepository;
+        this.reportRepository = reportRepository;
+        this.reportService = reportService;
     }
 
     public void sendMessageStart(Update update) {
@@ -105,6 +121,7 @@ public class UserRequestsService {
                 case "Советы кинолога" -> getDogHandlerAdvice(chatId);
                 case "Проверенные кинологи" -> getVerifiedDogHandlers(chatId);
 
+
             }
         }
     }
@@ -140,6 +157,8 @@ public class UserRequestsService {
     }
 
     private void getDogReport(long chatId) {
+        boolean isReport = true;
+        reportStateByChatId.put(chatId, isReport);
         SendMessage sendMessage = new SendMessage(chatId, "Здесь будет реализован отчёт о собаке");
         telegramBot.execute(sendMessage);
     }
@@ -339,6 +358,75 @@ public class UserRequestsService {
     }
     private void getVerifiedDogHandlers(long chatId) {
         SendMessage sendMessage = new SendMessage(chatId, "Здесь выдаются рекомендации по проверенным кинологам для дальнейшего обращения к ним");
+        telegramBot.execute(sendMessage);
+    }
+
+    public boolean checkReport(Update update) {
+
+        if (update.message() == null)
+            return false;
+
+        long chatId = update.message().from().id();
+
+        if (reportStateByChatId.containsKey(chatId)) {
+            handleAdopterReport(update);
+            reportStateByChatId.remove(chatId);
+            return true;
+        }
+        return false;
+    }
+
+    private void handleAdopterReport(Update update) {
+
+        Message message = update.message();
+        Long chatId = message.from().id();
+        long userId = update.message().from().id();
+        String text = message.text();
+        byte[] photo = new byte[0];
+
+        User user = userRepository.findByTelegramId(userId);
+
+//        List<Dialog> dialogList = dialogRepository.findAll().stream().toList();
+//        for (Dialog dialog : dialogList) {
+//            dialogRepository.delete(dialog);
+//        }
+
+        Report report = reportRepository.findReportByUserId(user);
+        LocalDate dateReport = LocalDate.now();
+        StatusReport statusReport = StatusReport.DEFAULT;
+
+        if (update.message().photo() != null) {
+            PhotoSize photoSize = message.photo()[message.photo().length - 1];
+            GetFileResponse getFileResponse = telegramBot.execute(new GetFile(photoSize.fileId()));
+            if (getFileResponse.isOk()) {
+                try {
+                    photo = telegramBot.getFileContent(getFileResponse.file());
+                    sendMessage(chatId, "Фото отправлено");
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        } else {
+            sendMessage(chatId, "Текст отправлен");
+        }
+
+        if (report == null) {
+            reportService.saveReport(user,
+                    text,
+                    photo,
+                    dateReport,
+                    statusReport);
+        } else {
+            reportService.updateReportByUserId(user,
+                    text,
+                    photo,
+                    dateReport,
+                    statusReport);
+        }
+
+    }
+    private void sendMessage(long chatId, String message) {
+        SendMessage sendMessage = new SendMessage(chatId, message);
         telegramBot.execute(sendMessage);
     }
 }

@@ -48,6 +48,9 @@ public class TelegramBotUpdateListener implements UpdatesListener {
                 if (userRequestsService.checkContactDetails(update)) {
                     return;
                 }
+                if (userRequestsService.checkReport(update)) {
+                    return;
+                }
                 if (update.message() == null) {
                     userRequestsService.createButton(update);
                 } else {
