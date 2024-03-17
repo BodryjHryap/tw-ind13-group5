@@ -4,6 +4,7 @@ import com.pengrad.telegrambot.model.CallbackQuery;
 import com.pengrad.telegrambot.model.Chat;
 import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
+import com.skypro.twind13group5.enums.UserStatus;
 import com.skypro.twind13group5.enums.UserType;
 import com.skypro.twind13group5.repository.UserRepository;
 import com.skypro.twind13group5.service.UserRequestsService;
@@ -22,6 +23,7 @@ class UserRequestsServiceTest {
     private static final String CORRECT_USER_NAME = "Nick";
     private static final long CORRECT_USER_ID = 123456789;
     private static final UserType CORRECT_USER_TYPE = UserType.DEFAULT;
+    private static final UserStatus CORRECT_USER_STATUS = UserStatus.APPROVE;
 
     @Mock
     private UserService userService;
@@ -44,13 +46,13 @@ class UserRequestsServiceTest {
 
     @Test
     void testWelcomeNewUser() {
-        com.skypro.twind13group5.model.User user = new com.skypro.twind13group5.model.User(CORRECT_USER_ID, CORRECT_USER_NAME, CORRECT_USER_TYPE);
+        com.skypro.twind13group5.model.User user = new com.skypro.twind13group5.model.User(CORRECT_USER_ID, CORRECT_USER_NAME, CORRECT_USER_TYPE, CORRECT_USER_STATUS);
         when(userService.findUserByTelegramId(1L)).thenReturn(user);
     }
 
     @Test
     void testWelcomeNotNewUser() {
-        com.skypro.twind13group5.model.User user = new com.skypro.twind13group5.model.User(CORRECT_USER_ID, CORRECT_USER_NAME, CORRECT_USER_TYPE);
+        com.skypro.twind13group5.model.User user = new com.skypro.twind13group5.model.User(CORRECT_USER_ID, CORRECT_USER_NAME, CORRECT_USER_TYPE, CORRECT_USER_STATUS);
         when(userService.findUserByTelegramId(1L)).thenReturn(user);
     }
 
