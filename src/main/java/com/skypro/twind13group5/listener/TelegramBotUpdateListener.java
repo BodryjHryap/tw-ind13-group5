@@ -11,6 +11,12 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+/**
+ * Объект, уведомляемый о событии.
+ * Он должен быть зарегистрирован источником событий
+ * и реализовывать методы для получения и обработки уведомлений.
+ */
+
 @Component
 public class TelegramBotUpdateListener implements UpdatesListener {
 

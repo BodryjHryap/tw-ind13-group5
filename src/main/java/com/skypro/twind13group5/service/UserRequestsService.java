@@ -6,9 +6,11 @@ import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
 import com.pengrad.telegrambot.request.SendPhoto;
+import com.skypro.twind13group5.enums.UserStatus;
 import com.skypro.twind13group5.model.User;
 import com.skypro.twind13group5.enums.UserType;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -18,7 +20,11 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@Component
+/**
+ * Сервис и бизнес-логика по работе запросов от пользователей.
+ */
+
+@Service
 public class UserRequestsService {
 
     private final UserService userService;
@@ -50,7 +56,7 @@ public class UserRequestsService {
 
             if (user == null) {
                 welcomeNewUser(chatId, firstName);
-                userService.addUser(telegramId, userName, UserType.DEFAULT);
+                userService.addUser(telegramId, userName, UserType.DEFAULT, UserStatus.APPROVE);
             } else {
                 welcomeNotNewUser(chatId, firstName);
             }

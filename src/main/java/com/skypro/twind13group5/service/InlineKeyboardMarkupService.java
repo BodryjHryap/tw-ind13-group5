@@ -4,8 +4,13 @@ import com.pengrad.telegrambot.model.request.InlineKeyboardButton;
 import com.pengrad.telegrambot.model.request.InlineKeyboardMarkup;
 import com.pengrad.telegrambot.model.request.Keyboard;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+/**
+ * Сервис и безнес-логика по созданию привязанных кнопок под сообщениями.
+ */
+
+@Service
 public class InlineKeyboardMarkupService {
     public InlineKeyboardMarkup createButtonsShelterTypeSelect() {
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
