@@ -108,8 +108,8 @@ public class UserRequestsService {
             } else if (user.getUserType() == UserType.DEFAULT && user.getUserStatus() == UserStatus.APPROVE) {
                 welcomeNotNewUser(chatId, firstName);
 
-            } else if (user.getUserType() == UserType.GUEST && user.getUserStatus() == UserStatus.APPROVE) {
-                welcomeGuest(chatId, firstName);
+//            } else if (user.getUserType() == UserType.GUEST && user.getUserStatus() == UserStatus.APPROVE) {
+//                welcomeGuest(chatId, firstName);
 
             } else if (user.getUserType() == UserType.ADOPTER && user.getUserStatus() == UserStatus.APPROVE) {
 
@@ -170,19 +170,19 @@ public class UserRequestsService {
         }
     }
 
-    private void welcomeGuest(long chatId, String name) {
-
-        SendMessage sendMessage =
-                new SendMessage(chatId, String.format("Здравствуйте, %s!\n" +
-                        "Вы записались на посещение приюта, дождитесь ответа от волонтера!\n" +
-                        "Выберете, пожалуйста, приют, из которого хотите забрать питомца!", name));
-
-        sendMessage.replyMarkup(inlineKeyboardMarkupService.createButtonsShelterTypeSelect());
-        SendResponse sendResponse = telegramBot.execute(sendMessage);
-        if (!sendResponse.isOk()) {
-            logger.error("Error during sending message: {}", sendResponse.description());
-        }
-    }
+//    private void welcomeGuest(long chatId, String name) {
+//
+//        SendMessage sendMessage =
+//                new SendMessage(chatId, String.format("Здравствуйте, %s!\n" +
+//                        "Вы записались на посещение приюта, дождитесь ответа от волонтера!\n" +
+//                        "Выберете, пожалуйста, приют, из которого хотите забрать питомца!", name));
+//
+//        sendMessage.replyMarkup(inlineKeyboardMarkupService.createButtonsShelterTypeSelect());
+//        SendResponse sendResponse = telegramBot.execute(sendMessage);
+//        if (!sendResponse.isOk()) {
+//            logger.error("Error during sending message: {}", sendResponse.description());
+//        }
+//    }
 
     private void welcomeAdopterDogShelter(long chatId, String name) {
 
@@ -194,7 +194,7 @@ public class UserRequestsService {
                         "Вы выбрали приют для собак!\n" +
                         "Выберете, пожалуйста, вариант из предложенного меню!", name));
 
-        sendMessage.replyMarkup(inlineKeyboardMarkupService.createButtonsDogShelterReport());
+        sendMessage.replyMarkup(inlineKeyboardMarkupService.createButtonsReport());
         SendResponse sendResponse = telegramBot.execute(sendMessage);
         if (!sendResponse.isOk()) {
             logger.error("Error during sending message: {}", sendResponse.description());
@@ -211,7 +211,7 @@ public class UserRequestsService {
                         "Вы выбрали приют для кошек!\n" +
                         "Выберете, пожалуйста, вариант из предложенного меню!", name));
 
-        sendMessage.replyMarkup(inlineKeyboardMarkupService.createButtonsCatShelterReport());
+        sendMessage.replyMarkup(inlineKeyboardMarkupService.createButtonsReport());
         SendResponse sendResponse = telegramBot.execute(sendMessage);
         if (!sendResponse.isOk()) {
             logger.error("Error during sending message: {}", sendResponse.description());
@@ -271,10 +271,9 @@ public class UserRequestsService {
                 case "Выбор приюта" -> getChoosingShelter(chatId);
                 case "Информация о приюте для собак" -> getDogShelterInfo(chatId);
                 case "Как взять собаку" -> getHowAdoptDog(chatId);
-                case "Отчёт о собаке" -> getDogReport(chatId);
+                case "Прислать отчёт" -> getReport(chatId);
                 case "Информация о приюте для кошек" -> getCatShelterInfo(chatId);
                 case "Как взять кошку" -> getHowAdoptCat(chatId);
-                case "Отчёт о кошке" -> getCatReport(chatId);
                 case "Вызов волонтёра" -> callVolunteer(chatId);
                 case "Расписание, адрес, схема(собаки)" -> getDogShelterInfo2(chatId);
                 case "Расписание, адрес, схема(кошки)" -> getCatShelterInfo2(chatId);
@@ -294,6 +293,26 @@ public class UserRequestsService {
                 case "Советы кинолога" -> getDogHandlerAdvice(chatId);
                 case "Проверенные кинологи" -> getVerifiedDogHandlers(chatId);
 
+                case "Правила предоставления отчёта" -> {sendMessage(chatId, "После того как новый усыновитель забрал животное из приюта, " +
+                        "он обязан в течение месяца присылать информацию о том, как животное чувствует " +
+                        "себя на новом месте. В ежедневный отчет входит следующая информация:\n" +
+                        "    - Фото животного.\n" +
+                        "    - Рацион животного.\n" +
+                        "    - Общее самочувствие и привыкание к новому месту.\n" +
+                        "    - Изменение в поведении: отказ от старых привычек, приобретение новых.\n" +
+                        "Отчет нужно присылать каждый день, ограничений в сутках по времени сдачи отчета нет. " +
+                        "Каждый день волонтеры осматривают все присланные отчеты после 21:00. ");
+
+                }
+                case "Отчёт" ->{reportStateByChatId.put(chatId, UserType.ADOPTER);
+                    SendMessage sendMessage1 = new SendMessage(chatId, """
+                            Отправьте отчет о питомце:
+                            фото питомца;
+                            рацион питомца;
+                            общее самочувствие и привыкание к новому месту;
+                            изменение в поведении.""");
+                    sendMessage(sendMessage1);}
+
                 case "CLICK_OK" -> {checkReportStatusOk();
                     sendMessage(chatId, "отчет принят!");}
                 case "CLICK_CHECK_REPORT" -> getCheckReport(update);
@@ -311,14 +330,6 @@ public class UserRequestsService {
                     sendMessage(chatId, "Испытательный срок продлен на 14 дней!");}
                 case "CLICK_EXTEND_30_DAY" -> {sendExtend30Day();
                     sendMessage(chatId, "Испытательный срок продлен на 30 дней!");}
-                case "CLICK_REPORT_DOG" ->{reportStateByChatId.put(chatId, UserType.ADOPTER);
-                    SendMessage sendMessage1 = new SendMessage(chatId, """
-                            Отправьте отчет о питомце:
-                            фото питомца;
-                            рацион питомца;
-                            общее самочувствие и привыкание к новому мету;
-                            изменение в поведении.""");
-                    sendMessage(sendMessage1);}
             }
         }
     }
@@ -353,9 +364,9 @@ public class UserRequestsService {
         telegramBot.execute(sendMessage);
     }
 
-    private void getDogReport(long chatId) {
-        SendMessage sendMessage = new SendMessage(chatId, "Здесь будет реализован отчёт о собаке");
-        sendMessage.replyMarkup(inlineKeyboardMarkupService.createButtonsDogShelterReport());
+    private void getReport(long chatId) {
+        SendMessage sendMessage = new SendMessage(chatId, "Отчёт");
+        sendMessage.replyMarkup(inlineKeyboardMarkupService.createButtonsReport());
         telegramBot.execute(sendMessage);
     }
 
@@ -368,11 +379,6 @@ public class UserRequestsService {
     private void getHowAdoptCat(long chatId) {
         SendMessage sendMessage = new SendMessage(chatId, "Здесь пишется информация о том как взять кошку из приюта");
         sendMessage.replyMarkup(inlineKeyboardMarkupService.createButtonsCatsShelterInfo());
-        telegramBot.execute(sendMessage);
-    }
-
-    private void getCatReport(long chatId) {
-        SendMessage sendMessage = new SendMessage(chatId, "Здесь будет реализован отчёт о кошке");
         telegramBot.execute(sendMessage);
     }
 
@@ -610,13 +616,13 @@ public class UserRequestsService {
         if (textReport != null && picture != null) {
             SendMessage message1 = new SendMessage(chatId, "Спасибо за полный отчёт," +
                     " результат проверки узнаете в течение дня!");
-            message1.replyMarkup(inlineKeyboardMarkupService.createButtonsCatShelterReport());
+            message1.replyMarkup(inlineKeyboardMarkupService.createButtonsReport());
             telegramBot.execute(message1);
 
         } else if (textReport == null || picture == null) {
             SendMessage message1 = new SendMessage(chatId, "Спасибо за отчёт! К сожалению, он не полный, " +
                     "поэтому мы настоятельно рекомендуем прислать полный отчет, чтобы избежать последствий!");
-            message1.replyMarkup(inlineKeyboardMarkupService.createButtonsCatShelterReport());
+            message1.replyMarkup(inlineKeyboardMarkupService.createButtonsReport());
             telegramBot.execute(message1);
         }
     }

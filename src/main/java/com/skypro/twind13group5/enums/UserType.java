@@ -8,7 +8,7 @@ package com.skypro.twind13group5.enums;
 
 public enum UserType {
     DEFAULT("Пользователь"),
-    GUEST("Гость"),
+//    GUEST("Гость"),
     ADOPTER("Усыновитель"),
     VOLUNTEER("Волонтер");
     private final String translationType;

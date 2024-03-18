@@ -2,8 +2,6 @@ package com.skypro.twind13group5.service;
 
 import com.pengrad.telegrambot.model.request.InlineKeyboardButton;
 import com.pengrad.telegrambot.model.request.InlineKeyboardMarkup;
-import com.pengrad.telegrambot.model.request.Keyboard;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 /**
@@ -23,7 +21,7 @@ public class InlineKeyboardMarkupService {
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
         inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Узнать информацию о приюте").callbackData("Информация о приюте для собак"));
         inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Как взять животное из приюта?").callbackData("Как взять собаку"));
-        inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Прислать отчет о питомце").callbackData("Отчёт о собаке"));
+        inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Прислать отчет о питомце").callbackData("Прислать отчёт"));
         inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Позвать волонтера").callbackData("Вызов волонтёра"));
         inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Вернуться в предыдущее меню").callbackData("Выбор приюта"));
         return inlineKeyboardMarkup;
@@ -32,7 +30,7 @@ public class InlineKeyboardMarkupService {
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
         inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Узнать информацию о приюте").callbackData("Информация о приюте для кошек"));
         inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Как взять животное из приюта?").callbackData("Как взять кошку"));
-        inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Прислать отчет о питомце").callbackData("Отчёт о кошке"));
+        inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Прислать отчет о питомце").callbackData("Прислать отчёт"));
         inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Позвать волонтера").callbackData("Вызов волонтёра"));
         inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Вернуться в предыдущее меню").callbackData("Выбор приюта"));
         return inlineKeyboardMarkup;
@@ -84,31 +82,17 @@ public class InlineKeyboardMarkupService {
         return inlineKeyboardMarkup;
     }
 
-    public InlineKeyboardMarkup createButtonsCatShelterReport() {
+    public InlineKeyboardMarkup createButtonsReport() {
 
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
         inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Правила предоставления отчета")
-                .callbackData("CLICK_RULES_REPORT_CAT"));
+                .callbackData("Правила предоставления отчёта"));
         inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Отчитаться")
-                .callbackData("CLICK_REPORT_CAT"));
+                .callbackData("Отчёт"));
         inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Позвать волонтера")
                 .callbackData("Вызов волонтёра"));
-        inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Назад")
-                .callbackData("CLICK_CAT_SHELTER"));
-        return inlineKeyboardMarkup;
-    }
-
-    public InlineKeyboardMarkup createButtonsDogShelterReport() {
-
-        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
-        inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Правила предоставления отчета")
-                .callbackData("CLICK_RULES_REPORT_DOG"));
-        inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Отчитаться")
-                .callbackData("CLICK_REPORT_DOG"));
-        inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Позвать волонтера")
-                .callbackData("Вызов волонтёра"));
-        inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Назад")
-                .callbackData("CLICK_DOG_SHELTER"));
+        inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Вернуться в предыдущее меню")
+                .callbackData("Выбор приюта"));
         return inlineKeyboardMarkup;
     }
 
@@ -143,7 +127,7 @@ public class InlineKeyboardMarkupService {
 
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
         inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Меню пользователя")
-                .callbackData("CLICK_BACK_TO_SHELTER_TYPE"));
+                .callbackData("Выбор приюта"));
         inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Добавить усыновителя")
                 .callbackData("CLICK_RECORDING_NEW_ANIMAL"));
         inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Проверить отчет")
