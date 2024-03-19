@@ -129,7 +129,7 @@ public class InlineKeyboardMarkupService {
         inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Меню пользователя")
                 .callbackData("Выбор приюта"));
         inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Добавить усыновителя")
-                .callbackData("CLICK_RECORDING_NEW_ANIMAL"));
+                .callbackData("Добавить усыновителя"));
         inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Проверить отчет")
                 .callbackData("CLICK_CHECK_REPORT"));
 

@@ -313,6 +313,14 @@ public class UserRequestsService {
                             изменение в поведении.""");
                     sendMessage(sendMessage1);}
 
+                case "Добавить усыновителя" -> {
+
+                    SendMessage sendMessage = new SendMessage(chatId, """
+                            Чтобы записать усыновителя, нужно заполнить форму:
+                            Напишите telegramId усыновителя, petId, shelterId
+                            в формате: 123456789 1 1""");
+                    sendMessage(sendMessage);
+                }
                 case "CLICK_OK" -> {checkReportStatusOk();
                     sendMessage(chatId, "отчет принят!");}
                 case "CLICK_CHECK_REPORT" -> getCheckReport(update);
