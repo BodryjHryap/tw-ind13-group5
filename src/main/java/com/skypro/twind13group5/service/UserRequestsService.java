@@ -772,8 +772,9 @@ public class UserRequestsService {
         SendMessage sendMessage =
                 new SendMessage(chatId, "Отчет от " + name +
                         ", был отправлен " + checkReport.getDateReport() + " :\n" +
-                        "отчет: " + checkReport.getReportText() + "\n" +
-                        "фото: " + checkReport.getPicture().toString());
+                        "отчет: " + checkReport.getReportText() + "\n");
+        SendPhoto sendPhoto = new SendPhoto(chatId, picture);
+        telegramBot.execute(sendPhoto);
 
         sendMessage.replyMarkup(inlineKeyboardMarkupService.createButtonsCheckReport());
 
