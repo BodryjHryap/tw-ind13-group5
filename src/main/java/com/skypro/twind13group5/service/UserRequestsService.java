@@ -291,11 +291,10 @@ public class UserRequestsService {
                 }
                 case "Отчёт" ->{reportStateByChatId.put(chatId, UserType.ADOPTER);
                     SendMessage sendMessage1 = new SendMessage(chatId, """
-                            Отправьте отчет о питомце:
-                            фото питомца;
-                            рацион питомца;
-                            общее самочувствие и привыкание к новому месту;
-                            изменение в поведении.""");
+                            Отправьте отчет о питомце двумя сообщениями:
+                            Фото питомца и текстовое сообщение, в которое будет включено:
+                            рацион питомца, общее самочувствие и привыкание к новому месту,
+                            а так же изменение в поведении.""");
                     sendMessage(sendMessage1);}
 
                 case "Добавить усыновителя" -> {
@@ -308,18 +307,22 @@ public class UserRequestsService {
                     sendMessage(sendMessage);
                 }
                 case "CLICK_OK" -> {checkReportStatusOk();
-                    sendMessage(chatId, "отчет принят!");}
+                    sendMessage(chatId, "Отчет принят!");
+                    }
                 case "CLICK_CHECK_REPORT" -> getCheckReport(update);
                 case "CLICK_FREE_MESSAGE" ->{messageStateByChatId.put(chatId, UserType.VOLUNTEER);
                     getFreeMessage(update);}
                 case "CLICK_NOT_OK" -> {checkReportStatusNotOk();
-                    SendMessage sendMessage2 = new SendMessage(chatId, "отчет не принят!");
+                    SendMessage sendMessage2 = new SendMessage(chatId, "Отчет не принят!");
                     sendMessage2.replyMarkup(inlineKeyboardMarkupService.createButtonsCheckReportNotOk());
                     sendMessage(sendMessage2);}
                 case "CLICK_WARNING_REPORT" -> {sendWarningMessage(update);
                     sendMessage(chatId, "Предупреждение отправлено!");}
                 case "CLICK_DELETE_ADOPTER" -> {sendWarningDeleteAdopter(update);
                     sendMessage(chatId, "Пользователь заблокирован!");}
+                case "CLICK_EXTEND" -> {SendMessage sendMessage3 = new SendMessage(chatId, "На сколько продлить испытательный срок?");
+                    sendMessage3.replyMarkup(inlineKeyboardMarkupService.createButtonsCheckReportNotOkExtend());
+                    sendMessage(sendMessage3);}
                 case "CLICK_EXTEND_14_DAY" -> {sendExtend14Day();
                     sendMessage(chatId, "Испытательный срок продлен на 14 дней!");}
                 case "CLICK_EXTEND_30_DAY" -> {sendExtend30Day();
@@ -379,7 +382,7 @@ public class UserRequestsService {
     private void callVolunteer(long chatId) {
         boolean forVolunteer = true;
         stateByChatId.put(chatId, forVolunteer);
-        SendMessage sendMessage = new SendMessage(chatId, "Напиши сообщение для волонтера");
+        SendMessage sendMessage = new SendMessage(chatId, "Оставьте сообщение для волонтера");
         telegramBot.execute(sendMessage);
     }
 
@@ -489,13 +492,12 @@ public class UserRequestsService {
         Long chatId = message.from().id();
         long userId = update.message().from().id();
         String text = message.text();
-        String name = message.from().username();
 
         if (validateContactDetails(text)) {
-            telegramBot.execute(new SendMessage(chatId, "ok"));
+            telegramBot.execute(new SendMessage(chatId, "Ваш телефон успешно сохранен!"));
             userService.addPhoneNumber(userId, text);
         } else {
-            telegramBot.execute(new SendMessage(chatId, "не ok"));
+            telegramBot.execute(new SendMessage(chatId, "Ваш телефон не удалось записать, попробуйте еще раз."));
         }
     }
 
@@ -564,14 +566,18 @@ public class UserRequestsService {
         long userId = update.message().from().id();
         String text = message.text();
 
-        User user = userRepository.findByTelegramId(userId);
+        User user1 = userRepository.findByTelegramId(userId);
 
         List<Dialog> dialogList = dialogRepository.findAll().stream().toList();
         for (Dialog dialog : dialogList) {
             dialogRepository.delete(dialog);
         }
 
-        Report report = reportRepository.findReportByUserId(user);
+        String name = message.from().username();
+        List<User> users = userService.getAllUsers();
+        List<User> volunteers = new ArrayList<User>();
+
+        Report report = reportRepository.findReportByUserId(user1);
         LocalDate dateReport = LocalDate.now();
         StatusReport statusReport = StatusReport.DEFAULT;
 
@@ -594,30 +600,42 @@ public class UserRequestsService {
         }
 
         if (report == null) {
-            reportService.saveReport(user,
+            reportService.saveReport(user1,
                     dateReport,
                     statusReport,
                     textReport,
                     picture);
         } else {
-            reportService.updateReportByUserId(user,
+            reportService.updateReportByUserId(user1,
                     dateReport,
                     statusReport,
                     textReport,
                     picture);
         }
 
+        SendPhoto sendPhoto = new SendPhoto(chatId, picture);
+
         if (textReport != null && picture != null) {
             SendMessage message1 = new SendMessage(chatId, "Спасибо за полный отчёт," +
                     " результат проверки узнаете в течение дня!");
+            for (User user : users) {
+                if (user.getUserType() == UserType.VOLUNTEER) {
+                    volunteers.add(user);
+                }
+            }
+            for (User volunteer : volunteers) {
+                telegramBot.execute(new SendMessage(volunteer.getTelegramId(), "Усыновитель " +
+                        "" + '@' + name + " прислал проверенный ботом отчет: " + textReport));
+                telegramBot.execute(sendPhoto);
+            }
             message1.replyMarkup(inlineKeyboardMarkupService.createButtonsReport());
             telegramBot.execute(message1);
 
         } else if (textReport == null || picture == null) {
-            SendMessage message1 = new SendMessage(chatId, "Спасибо за отчёт! К сожалению, он не полный, " +
+            SendMessage message2 = new SendMessage(chatId, "Спасибо за отчёт! К сожалению, он не полный, " +
                     "поэтому мы настоятельно рекомендуем прислать полный отчет, чтобы избежать последствий!");
-            message1.replyMarkup(inlineKeyboardMarkupService.createButtonsReport());
-            telegramBot.execute(message1);
+            message2.replyMarkup(inlineKeyboardMarkupService.createButtonsReport());
+            telegramBot.execute(message2);
         }
     }
 
@@ -642,10 +660,15 @@ public class UserRequestsService {
 
         LocalDate dateEndOfProbation = LocalDate.now().plusMonths(1);
 
+        String textMessage = "Испытательный срок продлен на 30 дней!";
+
         reportService.updateDateEndOfProbationById(user,
                 dateEndOfProbation);
 
-        Dialog dialog = new Dialog(user, null, "Испытательный срок продлен на 30 дней!", LocalDate.now());
+        long chatId = checkReport.getUserId().getTelegramId();
+        telegramBot.execute(new SendMessage(chatId, textMessage));
+
+        Dialog dialog = new Dialog(user, null, textMessage, LocalDate.now());
 
         dialogRepository.save(dialog);
     }
@@ -656,11 +679,17 @@ public class UserRequestsService {
 
         LocalDate dateEndOfProbation = LocalDate.now().plusWeeks(2);
 
+        String textMessage = "Испытательный срок продлен на 14 дней!";
+
         reportService.updateDateEndOfProbationById(user,
                 dateEndOfProbation);
 
-        Dialog dialog =
-                new Dialog(user, null, "Испытательный срок продлен на 14 дней!", LocalDate.now());
+        long chatId = checkReport.getUserId().getTelegramId();
+        telegramBot.execute(new SendMessage(chatId, textMessage));
+
+        Dialog dialog = new Dialog(user, null, textMessage, LocalDate.now());
+
+
 
         dialogRepository.save(dialog);
     }
@@ -675,6 +704,8 @@ public class UserRequestsService {
         LocalDate date = LocalDate.now();
 
         User guest = checkReport.getUserId();
+        long chatId = checkReport.getUserId().getTelegramId();
+        telegramBot.execute(new SendMessage(chatId, textMessage));
         UserStatus userStatus = UserStatus.BLOCKED;
 
         Dialog dialog = new Dialog(guest, null, textMessage, date);
@@ -685,14 +716,16 @@ public class UserRequestsService {
     }
 
     private void sendWarningMessage(Update update) {
-
         Message message = update.callbackQuery().message();
         String textMessage = "Дорогой усыновитель, мы заметили, " +
                 "что ты заполняешь отчет не так подробно, как необходимо." +
                 " Пожалуйста, подойди ответственнее к этому занятию. " +
                 "В противном случае волонтеры приюта будут обязаны самолично " +
                 "проверять условия содержания животного";
+
         long userId = message.from().id();
+        long chatId = checkReport.getUserId().getTelegramId();
+        telegramBot.execute(new SendMessage(chatId, textMessage));
 
         LocalDate date = LocalDate.now();
 
@@ -705,22 +738,33 @@ public class UserRequestsService {
     }
 
     private void checkReportStatusOk() {
+        String textMessage = "Отчет принят волонтером!";
+        long chatId = checkReport.getUserId().getTelegramId();
 
         User user = checkReport.getUserId();
 
         StatusReport statusReport = StatusReport.ACCEPTED;
 
+        LocalDate dateEndOfProbation = null;
+
+        reportService.updateDateEndOfProbationById(user,
+                dateEndOfProbation);
+
+        telegramBot.execute(new SendMessage(chatId, textMessage));
         reportService.updateStatusReportById(user,
                 statusReport);
 
     }
 
     private void checkReportStatusNotOk() {
+        String textMessage = "Отчет не принят волонтером!";
+        long chatId = checkReport.getUserId().getTelegramId();
 
         User user = checkReport.getUserId();
 
         StatusReport statusReport = StatusReport.NOT_ACCEPTED;
 
+        telegramBot.execute(new SendMessage(chatId, textMessage));
         reportService.updateStatusReportById(user,
                 statusReport);
     }
@@ -733,7 +777,7 @@ public class UserRequestsService {
         User guest = checkReport.getUserId();
 
         sendMessage(chatId, "Напишите пользователю " + '@' + guest.getTelegramNick() + " " +
-                "" + guest.getFirstName() + " в личном сообщении!");
+                "" + " в личном сообщении!");
     }
 
     private void getCheckReport(Update update) {
@@ -744,22 +788,26 @@ public class UserRequestsService {
         List<Report> reportList = reportService.getAllReport().stream().toList();
 
         for (Report report : reportList) {
-            if (report.getStatusReport() == StatusReport.DEFAULT) {
+            if (report.getStatusReport() == StatusReport.DEFAULT || report.getStatusReport() == StatusReport.NOT_ACCEPTED) {
                 checkReport = report;
                 break;
+            }
+            else if (report.getStatusReport() == StatusReport.ACCEPTED) {
+                checkReport = null;
             }
         }
         if (checkReport == null) {
             sendMessage(chatId, "Отчетов нет!");
             throw new NotFoundReportException("Отчетов нет!");
         }
+        User guest = checkReport.getUserId();
+        String name = guest.getTelegramNick();
 
-        String name = checkReport.getUserId().getFirstName();
         SendMessage sendMessage =
-                new SendMessage(chatId, "Отчет от " + name +
+                new SendMessage(chatId, "Отчет от " + '@' + name +
                         ", был отправлен " + checkReport.getDateReport() + " :\n" +
                         "отчет: " + checkReport.getReportText() + "\n");
-        SendPhoto sendPhoto = new SendPhoto(chatId, picture);
+        SendPhoto sendPhoto = new SendPhoto(chatId, checkReport.getPicture());
         telegramBot.execute(sendPhoto);
 
         sendMessage.replyMarkup(inlineKeyboardMarkupService.createButtonsCheckReport());
