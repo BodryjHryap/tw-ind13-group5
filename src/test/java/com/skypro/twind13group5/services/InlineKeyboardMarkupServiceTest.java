@@ -47,7 +47,7 @@ class InlineKeyboardMarkupServiceTest {
         InlineKeyboardButton button3 = markup.inlineKeyboard()[2][0];
         assertNotNull(button3);
         assertEquals("Прислать отчет о питомце", button3.text());
-        assertEquals("Отчёт о собаке", button3.callbackData());
+        assertEquals("Прислать отчёт", button3.callbackData());
 
         InlineKeyboardButton button4 = markup.inlineKeyboard()[3][0];
         assertNotNull(button4);
@@ -79,7 +79,7 @@ class InlineKeyboardMarkupServiceTest {
         InlineKeyboardButton button3 = markup.inlineKeyboard()[2][0];
         assertNotNull(button3);
         assertEquals("Прислать отчет о питомце", button3.text());
-        assertEquals("Отчёт о кошке", button3.callbackData());
+        assertEquals("Прислать отчёт", button3.callbackData());
 
         InlineKeyboardButton button4 = markup.inlineKeyboard()[3][0];
         assertNotNull(button4);

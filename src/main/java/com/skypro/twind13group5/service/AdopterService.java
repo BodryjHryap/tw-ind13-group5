@@ -32,6 +32,10 @@ public class AdopterService {
     public Adopter saveAdopter(Adopter adopter) {
         return adopterRepository.save(adopter);
     }
+    public Adopter saveAdopter2(User user, Pet pet) {
+        Adopter adopter = new Adopter(user, pet);
+        return adopterRepository.save(adopter);
+    }
 
     @Transactional
     public void updateAdopterById(Long id,
