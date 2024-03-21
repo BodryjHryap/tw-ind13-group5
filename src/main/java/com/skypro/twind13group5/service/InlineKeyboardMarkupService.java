@@ -135,4 +135,15 @@ public class InlineKeyboardMarkupService {
 
         return inlineKeyboardMarkup;
     }
+
+    public InlineKeyboardMarkup createButtonsCheckReportNotOkExtend() {
+
+        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
+        inlineKeyboardMarkup.addRow(new InlineKeyboardButton("На 14 дней")
+                .callbackData("CLICK_EXTEND_14_DAY"));
+        inlineKeyboardMarkup.addRow(new InlineKeyboardButton("На 30 дней")
+                .callbackData("CLICK_EXTEND_30_DAY"));
+
+        return inlineKeyboardMarkup;
+    }
 }
