@@ -6,11 +6,9 @@ import com.skypro.twind13group5.exception.NotFoundUserException;
 import com.skypro.twind13group5.model.User;
 import com.skypro.twind13group5.repository.UserRepository;
 import com.skypro.twind13group5.enums.UserType;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.xml.bind.ValidationException;
 import java.util.Collection;
 import java.util.List;
 
@@ -21,8 +19,6 @@ import java.util.List;
 @Service
 public class UserService {
     private final UserRepository userRepository;
-
-    private User user;
 
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -40,43 +36,6 @@ public class UserService {
             return newUser;
         }
         return user;
-    }
-
-    @Transactional
-    public User addGuest(long telegramId,
-                         String nickName,
-                         UserType userType,
-                         ShelterType shelterType,
-                         UserStatus userStatus,
-                         String firstName,
-                         String lastName,
-                         String phoneNumber,
-                         String carNumber) {
-
-        User newGuest = new User(telegramId,
-                nickName,
-                firstName,
-                lastName,
-                phoneNumber,
-                shelterType,
-                carNumber,
-                userType,
-                userStatus);
-        User user = userRepository.findByTelegramId(telegramId);
-        if (user == null) {
-            throw new NotFoundUserException("Пользователь не найден!");
-        }
-        userRepository.updateUserInGuestById(
-                firstName,
-                lastName,
-                phoneNumber,
-                carNumber,
-                shelterType,
-                userType,
-                userStatus,
-                telegramId);
-
-        return newGuest;
     }
 
     @Transactional
@@ -107,10 +66,10 @@ public class UserService {
         if (user == null) {
             throw new NotFoundUserException("Пользователь не найден!");
         }
-        userRepository.updateGuestInAdopterById(telegramId,
+        userRepository.updateAdopterOrVolunteerById(telegramId,
                 firstName,
                 lastName,
-                phoneNumber,
+                newAdopterOrVolunteer.getPhoneNumber(),
                 carNumber,
                 userType,
                 userStatus,

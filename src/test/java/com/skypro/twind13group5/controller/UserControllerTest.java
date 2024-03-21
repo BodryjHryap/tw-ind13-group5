@@ -79,37 +79,6 @@ class UserControllerTest {
     }
 
     @Test
-    public void testAddNewGuest_Success() {
-        User userMock = mock(User.class);
-        when(userService
-                .addGuest(anyLong(),
-                        anyString(),
-                        any(UserType.class),
-                        any(ShelterType.class),
-                        any(UserStatus.class),
-                        anyString(),
-                        anyString(),
-                        anyString(),
-                        anyString()))
-                .thenReturn(userMock);
-
-        ResponseEntity<User> response = userController
-                .addNewGuest(CORRECT_USER_ID,
-                        CORRECT_USER_NAME,
-                        CORRECT_SHELTER_TYPE,
-                        CORRECT_FIRST_NAME,
-                        CORRECT_LAST_NAME,
-                        CORRECT_PHONE_NUMBER,
-                        CORRECT_CAR_NUMBER,
-                        CORRECT_USER_TYPE,
-                        CORRECT_USER_STATUS);
-
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertNotNull(response.getBody());
-        assertEquals(userMock, response.getBody());
-    }
-
-    @Test
     public void testAddNewAdopterOrVolunteer_Success() throws Exception {
         User userMock = mock(User.class);
         when(userService

@@ -1,8 +1,11 @@
 package com.skypro.twind13group5.enums;
 
+import lombok.Getter;
+
 /**
  * Статус для усыновителей.
  */
+@Getter
 public enum UserStatus {
 
     APPROVE("Подтвержденный"),
@@ -14,7 +17,4 @@ public enum UserStatus {
         this.translationStatus = translationStatus;
     }
 
-    public String getTranslationColor() {
-        return translationStatus;
-    }
 }

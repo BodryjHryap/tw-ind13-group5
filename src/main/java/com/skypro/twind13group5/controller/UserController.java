@@ -62,51 +62,6 @@ public class UserController {
         }
     }
 
-    @PostMapping("/guest")
-    @Operation(
-            summary = "Регистрация гостя",
-            description = "Нужно написать данные гостя " +
-                    "(ID телеграмм, ник телеграмм, имя, фамилия, телефон, номер машины, " +
-                    "тип пользователя, статус пользователя)"
-    )
-    @ApiResponse(
-            responseCode = "200",
-            description = "Удалось добавить гостя"
-    )
-    @ApiResponse(
-            responseCode = "400",
-            description = "Параметры запроса отсутствуют или имеют некорректный формат"
-    )
-    @ApiResponse(
-            responseCode = "500",
-            description = "Произошла ошибка, не зависящая от вызывающей стороны"
-    )
-    public ResponseEntity<User> addNewGuest(@RequestParam(required = false) Long telegramId,
-                                            @RequestParam(required = false) String telegramNick,
-                                            @RequestParam(required = false) ShelterType shelterType,
-                                            @RequestParam(required = false) String firstName,
-                                            @RequestParam(required = false) String lastName,
-                                            @RequestParam(required = false) String phoneNumber,
-                                            @RequestParam(required = false) String carNumber,
-                                            @RequestParam(required = false) UserType userType,
-                                            @RequestParam(required = false) UserStatus userStatus) {
-
-        try {
-            return ResponseEntity.ok(userService.addGuest(telegramId,
-                    telegramNick,
-                    userType,
-                    shelterType,
-                    userStatus,
-                    firstName,
-                    lastName,
-                    phoneNumber,
-                    carNumber));
-        } catch (RuntimeException e) {
-            e.getStackTrace();
-            return ResponseEntity.notFound().build();
-        }
-    }
-
     @PostMapping("/adopter_volunteer")
     @Operation(
             summary = "Регистрация усыновителя/волонтера",
@@ -140,6 +95,17 @@ public class UserController {
                                                          @RequestParam(required = false) UserStatus userStatus) {
 
         try {
+            userService.addAdopterOrVolunteer(telegramId,
+                    telegramNick,
+                    userType,
+                    shelterType,
+                    userStatus,
+                    firstName,
+                    lastName,
+                    phoneNumber,
+                    carNumber,
+                    email,
+                    address);
             return ResponseEntity.ok(userService.addAdopterOrVolunteer(telegramId,
                     telegramNick,
                     userType,

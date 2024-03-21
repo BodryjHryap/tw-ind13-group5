@@ -50,7 +50,7 @@ public class UserRequestsService {
     private static String textReport;
     private static byte[] picture;
     private final Pattern patternAdopter = Pattern
-            .compile("(^\\d{10})\\s+(\\d)\\s+(\\d+$)");//ALT+Enter -> check
+            .compile("(^\\d{9,10})\\s+(\\d)\\s+(\\d+$)");//ALT+Enter -> check
     private final Pattern pattern = Pattern
             .compile("(^[А-я]+)\\s+([А-я]+)\\s+(\\d{10})\\s+([А-я0-9\\d]+$)");//ALT+Enter -> check
     private final UserRepository userRepository;
@@ -60,6 +60,7 @@ public class UserRequestsService {
     private final AdopterRepository adopterRepository;
     private final UserService userService;
     private final PetService petService;
+    private final AdopterService adopterService;
     private final ReportService reportService;
     private final Logger logger = LoggerFactory.getLogger(TelegramBotUpdateListener.class);
     private final TelegramBot telegramBot;
@@ -75,7 +76,7 @@ public class UserRequestsService {
     private static final int SECOND = 0;
     private static final long PERIOD_SECONDS = 24 * 60 * 60;
 
-    public UserRequestsService(UserRepository userRepository, DialogRepository dialogRepository, ReportRepository reportRepository, PetRepository petRepository, AdopterRepository adopterRepository, UserService userService, PetService petService, ReportService reportService, TelegramBot telegramBot, InlineKeyboardMarkupService inlineKeyboardMarkupService) {
+    public UserRequestsService(UserRepository userRepository, DialogRepository dialogRepository, ReportRepository reportRepository, PetRepository petRepository, AdopterRepository adopterRepository, UserService userService, PetService petService, ReportService reportService, TelegramBot telegramBot, InlineKeyboardMarkupService inlineKeyboardMarkupService, AdopterService adopterService) {
         this.userRepository = userRepository;
         this.dialogRepository = dialogRepository;
         this.reportRepository = reportRepository;
@@ -86,6 +87,7 @@ public class UserRequestsService {
         this.reportService = reportService;
         this.telegramBot = telegramBot;
         this.inlineKeyboardMarkupService = inlineKeyboardMarkupService;
+        this.adopterService = adopterService;
     }
 
     public void sendMessageStart(Update update) {
@@ -107,9 +109,6 @@ public class UserRequestsService {
 
             } else if (user.getUserType() == UserType.DEFAULT && user.getUserStatus() == UserStatus.APPROVE) {
                 welcomeNotNewUser(chatId, firstName);
-
-//            } else if (user.getUserType() == UserType.GUEST && user.getUserStatus() == UserStatus.APPROVE) {
-//                welcomeGuest(chatId, firstName);
 
             } else if (user.getUserType() == UserType.ADOPTER && user.getUserStatus() == UserStatus.APPROVE) {
 
@@ -169,20 +168,6 @@ public class UserRequestsService {
             logger.error("Error during sending message: {}", sendResponse.description());
         }
     }
-
-//    private void welcomeGuest(long chatId, String name) {
-//
-//        SendMessage sendMessage =
-//                new SendMessage(chatId, String.format("Здравствуйте, %s!\n" +
-//                        "Вы записались на посещение приюта, дождитесь ответа от волонтера!\n" +
-//                        "Выберете, пожалуйста, приют, из которого хотите забрать питомца!", name));
-//
-//        sendMessage.replyMarkup(inlineKeyboardMarkupService.createButtonsShelterTypeSelect());
-//        SendResponse sendResponse = telegramBot.execute(sendMessage);
-//        if (!sendResponse.isOk()) {
-//            logger.error("Error during sending message: {}", sendResponse.description());
-//        }
-//    }
 
     private void welcomeAdopterDogShelter(long chatId, String name) {
 
@@ -254,7 +239,7 @@ public class UserRequestsService {
 
         if (adopterStateByChatId.containsKey(chatId)) {
             recordingNewAnimals(update);
-            return true;
+                      return true;
         }
         return false;
     }
@@ -319,6 +304,7 @@ public class UserRequestsService {
                             Чтобы записать усыновителя, нужно заполнить форму:
                             Напишите telegramId усыновителя, petId, shelterId
                             в формате: 123456789 1 1""");
+                    adopterStateByChatId.put(chatId, UserType.ADOPTER);
                     sendMessage(sendMessage);
                 }
                 case "CLICK_OK" -> {checkReportStatusOk();
