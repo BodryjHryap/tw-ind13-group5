@@ -63,49 +63,7 @@ public class User {
         this.userStatus = userStatus;
     }
 
-    //Конструктор для гостя без машины
-    public User(long telegramId,
-                String telegramNick,
-                String firstName,
-                String lastName,
-                String phoneNumber,
-                ShelterType shelterType,
-                UserType userType,
-                UserStatus userStatus) {
-        this.telegramId = telegramId;
-        setTelegramNick(telegramNick);
-        setFirstName(firstName);
-        setLastName(lastName);
-        setPhoneNumber(phoneNumber);
-        this.shelterType = shelterType;
-        this.userType = userType;
-        this.userStatus = userStatus;
-    }
-
-    //Конструктор для гостя с машиной
-
-    public User(long telegramId,
-                String telegramNick,
-                String firstName,
-                String lastName,
-                String phoneNumber,
-                ShelterType shelterType,
-                String carNumber,
-                UserType userType,
-                UserStatus userStatus) {
-        this.telegramId = telegramId;
-        setTelegramNick(telegramNick);
-        setFirstName(firstName);
-        setLastName(lastName);
-        setCarNumber(carNumber);
-        setPhoneNumber(phoneNumber);
-        this.shelterType = shelterType;
-        this.userType = userType;
-        this.userStatus = userStatus;
-    }
-
     //Конструктор для усыновителя
-
     public User(long telegramId,
                 String telegramNick,
                 String firstName,
@@ -149,7 +107,7 @@ public class User {
     }
 
     public void setLastName(String lastName) {
-        if (firstName.matches("^[a-zA-Zа-яА-Я]+$")
+        if (lastName.matches("^[a-zA-Zа-яА-Я]+$")
                 && Character.isUpperCase(firstName.charAt(0))) {
             this.lastName = lastName;
         } else {
@@ -162,9 +120,9 @@ public class User {
         phoneNumber = phoneNumber.replace("-", "");
         phoneNumber = phoneNumber.replace(" ", "");
         phoneNumber = phoneNumber.replace("+", "");
-
+        this.phoneNumber = phoneNumber;
         if (phoneNumber.length() == 10) {
-            this.phoneNumber = '7' + phoneNumber;
+            this.phoneNumber = "+7" + phoneNumber;
         } else if (phoneNumber.length() > 11) {
             throw new RuntimeException("Телефон слишком длинный");
         } else if (phoneNumber.length() < 10) {

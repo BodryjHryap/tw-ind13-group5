@@ -32,39 +32,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     void updateUserPhone(@Param("telegram_id") long telegramId, @Param("phone_number") String phoneNumber);
 
     /**
-     * Изменяем пользователя до гостя
-     *
-     * @param telegramId      идентификатор в телеграмм
-     * @param firstName   имя гостя
-     * @param lastName    фамилия гостя
-     * @param phoneNumber телефон гостя
-     * @param carNumber   номер машины гостя
-     * @param userType    тип пользователя
-     * @param userStatus  статус пользователя
-     */
-
-    @Modifying
-    @Query("UPDATE User u SET " +
-            "u.firstName = :first_name, " +
-            "u.lastName = :last_name," +
-            "u.phoneNumber = :phone_number," +
-            "u.carNumber = :car_number," +
-            "u.shelterType = :shelter_type," +
-            "u.userType = :user_type," +
-            "u.userStatus = :user_status" +
-            " WHERE u.telegramId = :telegram_id")
-    void updateUserInGuestById(
-            @Param("first_name") String firstName,
-            @Param("last_name") String lastName,
-            @Param("phone_number") String phoneNumber,
-            @Param("car_number") String carNumber,
-            @Param("shelter_type") ShelterType shelterType,
-            @Param("user_type") UserType userType,
-            @Param("user_status") UserStatus userStatus,
-            @Param("telegram_id") Long telegramId);
-
-    /**
-     * Изменяем гостя до усыновителя/волонтера
+     * Изменяем пользователя до усыновителя/волонтера
      *
      * @param telegramId      идентификатор в телеграмм
      * @param firstName   имя усыновителя/волонтера
@@ -86,15 +54,15 @@ public interface UserRepository extends JpaRepository<User, Long> {
             "u.email = :email," +
             "u.address = :address" +
             " WHERE u.telegramId = :telegram_id")
-    void updateGuestInAdopterById(@Param("telegram_id") long telegramId,
-                                  @Param("first_name") String firstName,
-                                  @Param("last_name") String lastName,
-                                  @Param("phone_number") String phoneNumber,
-                                  @Param("car_number") String carNumber,
-                                  @Param("user_type") UserType userType,
-                                  @Param("user_status") UserStatus userStatus,
-                                  @Param("email") String email,
-                                  @Param("address") String address);
+    void updateAdopterOrVolunteerById(@Param("telegram_id") long telegramId,
+                                      @Param("first_name") String firstName,
+                                      @Param("last_name") String lastName,
+                                      @Param("phone_number") String phoneNumber,
+                                      @Param("car_number") String carNumber,
+                                      @Param("user_type") UserType userType,
+                                      @Param("user_status") UserStatus userStatus,
+                                      @Param("email") String email,
+                                      @Param("address") String address);
 
     @Modifying
     @Query("UPDATE User u SET " +
