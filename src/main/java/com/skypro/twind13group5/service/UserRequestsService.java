@@ -239,6 +239,7 @@ public class UserRequestsService {
 
         if (adopterStateByChatId.containsKey(chatId)) {
             recordingNewAnimals(update);
+            adopterStateByChatId.remove(chatId);
                       return true;
         }
         return false;
@@ -875,6 +876,7 @@ public class UserRequestsService {
                 Adopter adopterOne = adopterRepository.findAdopterByUserId(userId);
 
                 if (adopterOne == null) {
+                    adopter.getUser().setUserType(UserType.VOLUNTEER);
                     adopterRepository.save(adopter);
                     sendMessage(chatId, "усыновитель добавлен");
                     welcomeVolunteer(chatId, userName);
