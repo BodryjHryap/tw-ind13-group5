@@ -57,5 +57,11 @@ public class PetService {
     public Collection<Pet> getAllPets() {
         return petRepository.findAll();
     }
+    public Collection<Pet> getAllDogs() {
+        return petRepository.findAllDogs();
+    }
+    public Collection<Pet> getAllCats() {
+        return petRepository.findAllCats();
+    }
 
 }

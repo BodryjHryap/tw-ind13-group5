@@ -1,5 +1,8 @@
 package com.skypro.twind13group5.service;
 
+import com.pengrad.telegrambot.model.Message;
+import com.pengrad.telegrambot.model.Update;
+import com.skypro.twind13group5.enums.UserType;
 import com.skypro.twind13group5.exception.NotFoundAdopterException;
 import com.skypro.twind13group5.model.Adopter;
 import com.skypro.twind13group5.model.Pet;
@@ -11,6 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
+import java.util.Optional;
+import java.util.regex.Matcher;
 
 /**
  * Сервис и бизнес-логика по работе с усыновителями.
@@ -32,6 +37,7 @@ public class AdopterService {
     public Adopter saveAdopter(Adopter adopter) {
         return adopterRepository.save(adopter);
     }
+
     public Adopter saveAdopter2(User user, Pet pet) {
         Adopter adopter = new Adopter(user, pet);
         return adopterRepository.save(adopter);
@@ -68,6 +74,22 @@ public class AdopterService {
             throw new NotFoundAdopterException(toString());
         }
         return adopter;
+    }
+
+    public Adopter recordingNewAdopter(long userId, long petId) {
+
+        User user = userRepository.findById(userId).get();
+        Pet pet = petRepository.findById(petId).get();
+        user.setUserType(UserType.ADOPTER);
+
+        Adopter adopter = new Adopter(user, pet);
+        Adopter adopterOne = adopterRepository.findAdopterByUserId(user);
+
+        if (adopterOne != null) {
+            throw new NotFoundAdopterException("Усыновитель уже добавлен!");
+        }
+
+        return adopterRepository.save(adopter);
     }
 
 }

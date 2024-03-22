@@ -267,6 +267,7 @@ public class UserRequestsService {
                 case "Техника безопасности" -> getSafetyPrecautions(chatId);
                 case "Записать телефон" -> writePhone(chatId);
                 case "Список собак" -> listOfDogs(chatId);
+                case "Список кошек" -> listOfCats(chatId);
                 case "Правила знакомства" -> datingRules(chatId);
                 case "Список документов" -> listOfDocuments(chatId);
                 case "Рекомендации" -> getRecommendations(chatId);
@@ -375,7 +376,7 @@ public class UserRequestsService {
 
     private void getHowAdoptCat(long chatId) {
         SendMessage sendMessage = new SendMessage(chatId, "Здесь пишется информация о том как взять кошку из приюта");
-        sendMessage.replyMarkup(inlineKeyboardMarkupService.createButtonsCatsShelterInfo());
+        sendMessage.replyMarkup(inlineKeyboardMarkupService.createButtonsHowAdoptCat());
         telegramBot.execute(sendMessage);
     }
 
@@ -504,9 +505,15 @@ public class UserRequestsService {
     private void listOfDogs(long chatId) {
         SendMessage sendMessage = new SendMessage(chatId, "Список собак, имеющихся в приюте");
         telegramBot.execute(sendMessage);
-        SendMessage sendMessage2 = new SendMessage(chatId, petService.getAllPets().toString());
+        SendMessage sendMessage2 = new SendMessage(chatId, petService.getAllDogs().toString());
         telegramBot.execute(sendMessage2);
+    }
 
+    private void listOfCats(long chatId) {
+        SendMessage sendMessage = new SendMessage(chatId, "Список кошек, имеющихся в приюте");
+        telegramBot.execute(sendMessage);
+        SendMessage sendMessage2 = new SendMessage(chatId, petService.getAllCats().toString());
+        telegramBot.execute(sendMessage2);
     }
 
     private void datingRules(long chatId) {

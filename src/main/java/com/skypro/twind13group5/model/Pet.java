@@ -80,4 +80,14 @@ public class Pet {
             this.gender = gender;
         }
     }
+
+    @Override
+    public String toString() {
+        return "id - " + id +
+                ". кличка - " + petName +
+                ", цвет - " + color +
+                ", пол - " + gender.getTranslationGender() +
+                ", порода - " + breed +
+                '\n';
+    }
 }

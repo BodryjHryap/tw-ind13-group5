@@ -10,6 +10,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.awt.*;
+import java.util.Collection;
 
 @Repository
 public interface PetRepository extends JpaRepository<Pet, Long> {
@@ -38,4 +39,11 @@ public interface PetRepository extends JpaRepository<Pet, Long> {
             @Param("color") String color,
             @Param("gender") Gender gender,
             @Param("breed") String breed);
+
+    @Query("SELECT a FROM Pet a WHERE " +
+            "a.petType = 0")
+    Collection<Pet> findAllDogs();
+    @Query("SELECT a FROM Pet a WHERE " +
+            "a.petType = 1")
+    Collection<Pet> findAllCats();
 }

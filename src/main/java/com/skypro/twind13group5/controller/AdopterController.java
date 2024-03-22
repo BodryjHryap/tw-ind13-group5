@@ -31,7 +31,7 @@ public class AdopterController {
     @Operation(
             summary = "Регистрация усыновителя",
             description = "Нужно написать данные усыновителя " +
-                    "(id пользователя, id животного, id приюта)"
+                    "(id пользователя, id животного)"
     )
     @ApiResponse(
             responseCode = "200",
@@ -49,6 +49,33 @@ public class AdopterController {
 
         try {
             return ResponseEntity.ok(adopterService.saveAdopter(adopter));
+        } catch (RuntimeException e) {
+            e.getStackTrace();
+            return ResponseEntity.notFound().build();
+        }
+    }
+    @PostMapping("/by-Id")
+    @Operation(
+            summary = "Регистрация усыновителя",
+            description = "Нужно написать id пользователя и id животного"
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "Удалось добавить усыновителя"
+    )
+    @ApiResponse(
+            responseCode = "400",
+            description = "Параметры запроса отсутствуют или имеют некорректный формат"
+    )
+    @ApiResponse(
+            responseCode = "500",
+            description = "Произошла ошибка, не зависящая от вызывающей стороны"
+    )
+    public ResponseEntity<Adopter> saveNewAdopterById(@RequestParam(required = true) long userId,
+                                                      @RequestParam(required = true) long petId
+                                                        ) {
+        try {
+            return ResponseEntity.ok(adopterService.recordingNewAdopter(userId, petId));
         } catch (RuntimeException e) {
             e.getStackTrace();
             return ResponseEntity.notFound().build();

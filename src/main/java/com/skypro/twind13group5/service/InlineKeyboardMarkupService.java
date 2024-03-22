@@ -2,6 +2,7 @@ package com.skypro.twind13group5.service;
 
 import com.pengrad.telegrambot.model.request.InlineKeyboardButton;
 import com.pengrad.telegrambot.model.request.InlineKeyboardMarkup;
+import com.pengrad.telegrambot.model.request.Keyboard;
 import org.springframework.stereotype.Service;
 
 /**
@@ -67,6 +68,19 @@ public class InlineKeyboardMarkupService {
         inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Оставить контактные данные для связи").callbackData("Записать телефон"));
         inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Позвать волонтера").callbackData("Вызов волонтёра"));
         inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Вернуться в предыдущее меню").callbackData("Приют для собак"));
+        return inlineKeyboardMarkup;
+    }
+
+    public Keyboard createButtonsHowAdoptCat() {
+        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
+        inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Список животных для усыновления").callbackData("Список кошек"));
+        inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Правила знакомства с животным").callbackData("Правила знакомства"));
+        inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Список документов для усыновления").callbackData("Список документов"));
+        inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Список рекомендаций").callbackData("Рекомендации"));
+        inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Возможные причины отказа").callbackData("Причины отказа"));
+        inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Оставить контактные данные для связи").callbackData("Записать телефон"));
+        inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Позвать волонтера").callbackData("Вызов волонтёра"));
+        inlineKeyboardMarkup.addRow(new InlineKeyboardButton("Вернуться в предыдущее меню").callbackData("Приют для кошек"));
         return inlineKeyboardMarkup;
     }
 
